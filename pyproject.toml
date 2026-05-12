@@ -1,12 +1,20 @@
 [project]
 name = "fabenode-data-report"
 version = "0.1.0"
-description = "Add your description here"
+description = "Data reporting pipeline for FABENODE physiological analysis"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "jupyter>=1.1.1",
     "matplotlib>=3.10.8",
     "pandas>=2.3.3",
+    "pydantic>=2.13.4",
     "seaborn>=0.13.2",
 ]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
