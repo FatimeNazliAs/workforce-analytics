@@ -1,0 +1,20 @@
+stress:
+  score_col: "stress_score"
+  high_threshold: 6
+  critical_threshold: 8
+
+heart_rate:
+  score_col: "hr"
+  high_threshold: 100
+
+data_cols:
+  validation_col: "message"
+  validation_choice: "SUCCESS"
+
+data_location:
+  raw_file_path: "data/raw"
+  interim_file_path: "data/interim"
+  processed_file_path: "data/processed"
+
+
+
