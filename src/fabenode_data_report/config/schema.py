@@ -39,3 +39,30 @@ class DataLocationConfig(BaseModel):
 class DataConfig(BaseModel):
     data_cols: DataColumnsConfig
     data_location: DataLocationConfig
+
+
+class TimeConfig(BaseModel):
+    start_col: str
+    finish_col: str
+    start_datetime_col: str = "start_time_dt"
+    finish_datetime_col: str = "finish_time_dt"
+    time_col: str = "time"
+    date_col: str = "date"
+    hour_col: str = "hour"
+
+
+class ShiftWindowConfig(BaseModel):
+    label: str
+    start_time: str
+    end_time: str
+
+
+class ShiftConfig(BaseModel):
+    shift_col: str = "shift"
+    morning: ShiftWindowConfig
+    evening: ShiftWindowConfig
+
+
+class TimeFeatureConfig(BaseModel):
+    time: TimeConfig
+    shifts: ShiftConfig

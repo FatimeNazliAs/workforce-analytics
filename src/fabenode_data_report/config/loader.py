@@ -1,6 +1,8 @@
 from pathlib import Path
-from .schema import DataConfig, RiskConfig
+
 import yaml
+
+from .schema import DataConfig, RiskConfig, TimeConfig, TimeFeatureConfig
 
 
 class ConfigLoader:
@@ -42,3 +44,9 @@ class ConfigLoader:
 
     def load_risk_config(self) -> RiskConfig:
         return RiskConfig(**self.config)
+
+    def load_time_config(self) -> TimeConfig:
+        return TimeConfig(**self.config)
+
+    def load_time_feature_config(self) -> TimeFeatureConfig:
+        return TimeFeatureConfig(**self.config)

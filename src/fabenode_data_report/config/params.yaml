@@ -17,4 +17,24 @@ data_location:
   processed_file_path: "data/processed"
 
 
+time:
+  start_col: "start_time"
+  finish_col: "finish_time"
+  start_datetime_col: "start_time_dt"
+  finish_datetime_col: "finish_time_dt"
+  date_col: "date"
+  time_col: "time"
+  hour_col: "hour"
 
+
+shifts:
+  shift_col: "shift"
+  morning:
+    label: "morning"
+    start_time: "06:00"
+    end_time: "14:30"
+
+  evening:
+    label: "evening"
+    start_time: "14:30"
+    end_time: "00:00"
