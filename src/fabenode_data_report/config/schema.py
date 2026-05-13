@@ -20,11 +20,11 @@ class RiskConfig(BaseModel):
 class DataColumnsConfig(BaseModel):
     validation_col: str = Field(
         ...,
-        description="Column name for valid HR HRV data.",
+        description="Column used to determine whether a row is valid.",
     )
     validation_choice: str = Field(
         ...,
-        description="Column name for valid HR HRV data.",
+        description="Value indicating a valid row in the validation column.",
     )
 
 
@@ -36,9 +36,16 @@ class DataLocationConfig(BaseModel):
     processed_file_path: str = Field(..., description="")
 
 
-class DataConfig(BaseModel):
-    data_cols: DataColumnsConfig
-    data_location: DataLocationConfig
+class UserDatasetConfig(BaseModel):
+    user_id: str
+    file_name: str
+
+
+class DatasetConfig(BaseModel):
+    user_id_col: str
+    source_file_col: str
+    users: list[UserDatasetConfig]
+
 
 
 class TimeConfig(BaseModel):

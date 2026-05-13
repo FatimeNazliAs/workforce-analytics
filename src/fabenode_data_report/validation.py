@@ -1,6 +1,6 @@
 import pandas as pd
 
-from fabenode_data_report.config.schema import DataConfig
+from fabenode_data_report.config.schema import DataColumnsConfig
 from fabenode_data_report.validation_utils import validate_column_exists
 
 
@@ -10,11 +10,11 @@ class DataValidator:
 
     Parameters
     ----------
-    data_config : DataConfig
+    data_config : DataColumnsConfig
         Configuration containing data column names and valid values.
     """
 
-    def __init__(self, data_config: DataConfig):
+    def __init__(self, data_config: DataColumnsConfig):
         self.data_config = data_config
 
     def filter_valid_rows(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -36,8 +36,8 @@ class DataValidator:
         KeyError
             If the configured validation column is missing.
         """
-        validation_col = self.data_config.data_cols.validation_col
-        validation_value = self.data_config.data_cols.validation_choice
+        validation_col = self.data_config.validation_col
+        validation_value = self.data_config.validation_choice
 
         validate_column_exists(df=df, column_name=validation_col)
 
