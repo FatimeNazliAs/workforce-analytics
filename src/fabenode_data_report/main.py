@@ -2,19 +2,11 @@
 
 from pathlib import Path
 
-
 from fabenode_data_report.config.loader import ConfigLoader
-from fabenode_data_report.data_loader import DataLoader
-from fabenode_data_report.time_features import (
-    add_basic_time_features,
-    add_datetime_columns,
-    add_time_of_day_feature,
-    assign_shift,
-)
-from fabenode_data_report.diagnostics import summarize_shift_assignment
-
-from fabenode_data_report.validation import DataValidator
 from fabenode_data_report.datasets import DatasetAssembler
+from fabenode_data_report.preprocessing import prepare_analysis_dataset
+from fabenode_data_report.validation import DataValidator
+from fabenode_data_report.data_writer import DataWriter
 
 
 def main() -> None:
@@ -34,22 +26,16 @@ def main() -> None:
         data_location_config=data_location_config,
     )
 
-    df = dataset_assembler.load_user_datasets(stage="raw")
-
     validator = DataValidator(data_config=data_columns_config)
-    valid_df = validator.filter_valid_rows(df)
 
-    valid_df = add_datetime_columns(valid_df, time_feature_config.time)
-    valid_df = add_basic_time_features(valid_df, time_feature_config.time)
-    valid_df = add_time_of_day_feature(valid_df, time_feature_config.time)
-    valid_df = assign_shift(valid_df, time_feature_config)
-
-    print(valid_df[dataset_config.user_id_col].value_counts())
-    print(
-        valid_df.groupby(
-            [dataset_config.user_id_col, time_feature_config.shifts.shift_col]
-        ).size()
+    prepared_df = prepare_analysis_dataset(
+        dataset_assembler=dataset_assembler,
+        validator=validator,
+        time_config=time_feature_config,
+        stage="raw",
     )
+    data_writer = DataWriter(data_location_config)
+    data_writer.save_data(prepared_df, "prepared_analysis_dataset.csv", "interim")
 
 
 if __name__ == "__main__":
