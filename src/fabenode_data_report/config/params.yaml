@@ -7,15 +7,6 @@ heart_rate:
   score_col: "hr"
   high_threshold: 100
 
-data_cols:
-  validation_col: "message"
-  validation_choice: "SUCCESS"
-
-data_location:
-  raw_file_path: "data/raw"
-  interim_file_path: "data/interim"
-  processed_file_path: "data/processed"
-
 
 time:
   start_col: "start_time"
@@ -38,3 +29,25 @@ shifts:
     label: "evening"
     start_time: "14:30"
     end_time: "00:00"
+
+
+data_cols:
+  validation_col: "message"
+  validation_choice: "SUCCESS"
+
+data_location:
+  raw_file_path: "data/raw"
+  interim_file_path: "data/interim"
+  processed_file_path: "data/processed"
+
+
+datasets:
+  user_id_col: "user_id"
+  source_file_col: "source_file"
+  users:
+    - user_id: "user_48"
+      file_name: "user_48_feb02_14_full_hrv.csv"
+
+    - user_id: "user_49"
+      file_name: "user_49_feb04_14_full_hrv_fixed.csv"
+

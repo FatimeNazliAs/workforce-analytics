@@ -14,22 +14,27 @@ from fabenode_data_report.time_features import (
 from fabenode_data_report.diagnostics import summarize_shift_assignment
 
 from fabenode_data_report.validation import DataValidator
-
-
+from fabenode_data_report.datasets import DatasetAssembler
 
 
 def main() -> None:
-
     config_path = Path(__file__).parent / "config"
-    config_name = "params.yaml"
-    config = ConfigLoader(config_name=config_name, config_path=config_path)
+    config_loader = ConfigLoader(
+        config_name="params.yaml",
+        config_path=config_path,
+    )
 
-    data_location_config = config.load_data_location_config()
-    data_columns_config = config.load_data_columns_config()
-    time_feature_config = config.load_time_feature_config()
+    data_location_config = config_loader.load_data_location_config()
+    data_columns_config = config_loader.load_data_columns_config()
+    dataset_config = config_loader.load_dataset_config()
+    time_feature_config = config_loader.load_time_feature_config()
 
-    loader = DataLoader(data_location_config)
-    df = loader.load_data(file_name="user_48_feb02_14_full_hrv.csv", stage="raw")
+    dataset_assembler = DatasetAssembler(
+        dataset_config=dataset_config,
+        data_location_config=data_location_config,
+    )
+
+    df = dataset_assembler.load_user_datasets(stage="raw")
 
     validator = DataValidator(data_config=data_columns_config)
     valid_df = validator.filter_valid_rows(df)
@@ -39,13 +44,12 @@ def main() -> None:
     valid_df = add_time_of_day_feature(valid_df, time_feature_config.time)
     valid_df = assign_shift(valid_df, time_feature_config)
 
-    # shift_summary = summarize_shift_assignment(
-    #     df=valid_df,
-    #     time_col=time_feature_config.time.time_col,
-    #     shift_col=time_feature_config.shifts.shift_col,
-    # )
-
-    # print(shift_summary)
+    print(valid_df[dataset_config.user_id_col].value_counts())
+    print(
+        valid_df.groupby(
+            [dataset_config.user_id_col, time_feature_config.shifts.shift_col]
+        ).size()
+    )
 
 
 if __name__ == "__main__":
